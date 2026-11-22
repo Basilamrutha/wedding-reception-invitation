@@ -311,30 +311,30 @@ footer p { font-size: 13px; color: #DDD2C0; }
     }
 
 }
-.music-btn {
-    position: fixed;
-    bottom: 25px;
-    right: 20px;
-    z-index: 9999;
-    background: #b8860b;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 30px;
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-}
 
-/* Hide unwanted default audio controls */
-audio {
+/* Hide all native audio players */
+audio,
+audio[controls] {
     display: none !important;
+    visibility: hidden !important;
 }
 
-/* Keep custom golden music button visible */
+/* Keep the wedding music button */
 .music-button {
     display: flex !important;
+    align-items: center;
+    justify-content: center;
     position: fixed;
+    right: 22px;
+    bottom: 22px;
     z-index: 9999;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--deep-navy);
+    border: 0;
+    font-size: 24px;
+    cursor: pointer;
 }
 
