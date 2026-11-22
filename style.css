@@ -338,34 +338,32 @@ audio[controls] {
     cursor: pointer;
 }
 
-/* Tap anywhere for music indication */
 
+/* Tap anywhere for music message */
 .music-hint {
     position: fixed;
-    bottom: 88px;
+    bottom: 85px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 9998;
-    background: rgba(23, 36, 59, 0.94);
-    color: #E1C99F;
-    border: 1px solid #C5A16E;
-    padding: 11px 20px;
+    background: #17243a;
+    color: #e8c77a;
+    padding: 12px 22px;
+    border: 1px solid #e8c77a;
     border-radius: 30px;
-    font-family: "Poppins", sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.5px;
+    font-size: 14px;
+    z-index: 99999;
     white-space: nowrap;
-    animation: musicPulse 2s infinite;
-    pointer-events: none;
+    animation: musicPulse 1.5s infinite;
 }
 
 .music-hint.hidden {
-    display: none;
+    display: none !important;
 }
 
 @keyframes musicPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.65; }
+    50% {
+        opacity: 0.6;
+    }
 }
 
 
