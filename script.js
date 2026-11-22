@@ -61,11 +61,12 @@ if ("IntersectionObserver" in window && !reduceMotion) {
 
 
 
+
 /* 4. Wedding background music */
 
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
-const openInvitation = document.getElementById("openInvitation");
+const hero = document.querySelector(".hero");
 
 if (music) {
 
@@ -79,18 +80,19 @@ if (music) {
             }
 
         } catch (error) {
-            console.log("Music playback failed:", error);
+            console.log("Music playback error:", error);
         }
     }
 
-    // Start music when visitor opens invitation
-    if (openInvitation) {
-        openInvitation.addEventListener("click", startWeddingMusic);
+    // Start music when visitor clicks the opening invitation screen
+    if (hero) {
+        hero.addEventListener("click", startWeddingMusic, { once: true });
     }
 
-    // Golden music button
+    // Music play/pause button
     if (musicButton) {
-        musicButton.addEventListener("click", async () => {
+        musicButton.addEventListener("click", async (event) => {
+            event.stopPropagation();
 
             if (music.paused) {
                 await startWeddingMusic();
@@ -99,7 +101,6 @@ if (music) {
                 musicButton.textContent = "♪";
                 musicButton.setAttribute("aria-pressed", "false");
             }
-
         });
     }
 }
