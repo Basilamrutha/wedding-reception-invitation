@@ -63,64 +63,44 @@ if ("IntersectionObserver" in window && !reduceMotion) {
 
 
 
-/* 4. Start wedding music on first screen interaction */
+/* Wedding music autoplay */
 
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
 
 if (music) {
 
-    let musicStarted = false;
+    // Attempt autoplay immediately on page load
+    music.play().then(() => {
+        if (musicButton) musicButton.textContent = "♫";
+    }).catch(() => {
+        console.log("Autoplay blocked. Waiting for visitor interaction.");
+    });
 
+    // Start on the first interaction if autoplay is blocked
     async function startMusic() {
-        if (musicStarted) return;
-
         try {
             await music.play();
-            musicStarted = true;
-
-            if (musicButton) {
-                musicButton.textContent = "♫";
-                musicButton.setAttribute("aria-pressed", "true");
-            }
-
+            if (musicButton) musicButton.textContent = "♫";
         } catch (error) {
-            console.log("Music could not start:", error);
+            console.log(error);
         }
     }
 
-    // Start music on the first touch, click or keyboard interaction
-    document.addEventListener("pointerdown", startMusic, {
-        once: true
-    });
+    document.addEventListener("pointerdown", startMusic, { once: true });
 
-    document.addEventListener("keydown", startMusic, {
-        once: true
-    });
-
-    // Golden music button: play and pause
+    // Music button
     if (musicButton) {
-        musicButton.addEventListener("click", async (event) => {
-            event.stopPropagation();
-
+        musicButton.addEventListener("click", async () => {
             if (music.paused) {
-                try {
-                    await music.play();
-                    musicStarted = true;
-                    musicButton.textContent = "♫";
-                    musicButton.setAttribute("aria-pressed", "true");
-                } catch (error) {
-                    console.log(error);
-                }
+                await startMusic();
             } else {
                 music.pause();
                 musicButton.textContent = "♪";
-                musicButton.setAttribute("aria-pressed", "false");
             }
         });
     }
 }
-
 
 /* 5. Gallery lightbox */
 const lightbox = document.getElementById("lightbox");
