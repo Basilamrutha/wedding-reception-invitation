@@ -60,36 +60,33 @@ if ("IntersectionObserver" in window && !reduceMotion) {
 
 
 
-/* Background music */
+/* Wedding music */
 
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
+const openInvitation = document.getElementById("openInvitation");
 
-if (music && musicButton) {
-
-    // Try automatic playback
-    music.play().then(() => {
+async function startWeddingMusic() {
+    try {
+        await music.play();
         musicButton.textContent = "♫";
-    }).catch(() => {
-        console.log("Waiting for visitor interaction");
-    });
-
-    // Play or pause when visitor clicks
-    musicButton.addEventListener("click", async () => {
-        try {
-            if (music.paused) {
-                await music.play();
-                musicButton.textContent = "♫";
-            } else {
-                music.pause();
-                musicButton.textContent = "♪";
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    });
-
+        musicButton.setAttribute("aria-pressed", "true");
+    } catch (error) {
+        console.log("Music playback failed:", error);
+    }
 }
+
+openInvitation.addEventListener("click", startWeddingMusic);
+
+musicButton.addEventListener("click", async () => {
+    if (music.paused) {
+        await startWeddingMusic();
+    } else {
+        music.pause();
+        musicButton.textContent = "♪";
+        musicButton.setAttribute("aria-pressed", "false");
+    }
+});
 
 
 /* 5. Gallery lightbox */
