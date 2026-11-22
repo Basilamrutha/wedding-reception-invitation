@@ -63,40 +63,55 @@ if ("IntersectionObserver" in window && !reduceMotion) {
 
 
 
-/* Wedding music autoplay */
+
+/* Wedding music - Desktop and Mobile */
 
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
 
 if (music) {
 
-    // Attempt autoplay immediately on page load
-    music.play().then(() => {
-        if (musicButton) musicButton.textContent = "♫";
-    }).catch(() => {
-        console.log("Autoplay blocked. Waiting for visitor interaction.");
-    });
-
-    // Start on the first interaction if autoplay is blocked
+    // Attempt playback immediately on page load
     async function startMusic() {
         try {
             await music.play();
-            if (musicButton) musicButton.textContent = "♫";
+
+            if (musicButton) {
+                musicButton.textContent = "♫";
+                musicButton.setAttribute("aria-pressed", "true");
+            }
+
         } catch (error) {
-            console.log(error);
+            console.log("Browser blocked autoplay:", error);
         }
     }
 
-    document.addEventListener("pointerdown", startMusic, { once: true });
+    // Try autoplay on every page load, including mobile
+    window.addEventListener("load", startMusic);
 
-    // Music button
+    // Retry when the page becomes visible
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden && music.paused) {
+            startMusic();
+        }
+    });
+
+    // First visitor interaction fallback
+    document.addEventListener("pointerdown", startMusic, {
+        once: true
+    });
+
+    // Golden music button
     if (musicButton) {
-        musicButton.addEventListener("click", async () => {
+        musicButton.addEventListener("click", async (event) => {
+            event.stopPropagation();
+
             if (music.paused) {
                 await startMusic();
             } else {
                 music.pause();
                 musicButton.textContent = "♪";
+                musicButton.setAttribute("aria-pressed", "false");
             }
         });
     }
