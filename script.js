@@ -59,30 +59,47 @@ if ("IntersectionObserver" in window && !reduceMotion) {
 }
 
 
+
 /* 4. Background music */
+
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
 
 if (music && musicButton) {
+
   musicButton.addEventListener("click", async () => {
+
     try {
+
       if (music.paused) {
+
         await music.play();
+
         musicButton.textContent = "♫";
         musicButton.setAttribute("aria-pressed", "true");
         musicButton.setAttribute("aria-label", "Pause wedding music");
+
       } else {
+
         music.pause();
+
         musicButton.textContent = "♪";
         musicButton.setAttribute("aria-pressed", "false");
         musicButton.setAttribute("aria-label", "Play wedding music");
+
       }
+
     } catch (error) {
+
       console.error("Music error:", error);
-      alert("Music could not play. Please check the audio file.");
+      alert("Music could not play. Please check the MP3 file.");
+
     }
+
   });
+
 }
+
 
 
 /* 5. Gallery lightbox */
