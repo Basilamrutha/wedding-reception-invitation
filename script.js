@@ -62,17 +62,22 @@ if ("IntersectionObserver" in window && !reduceMotion) {
 
 
 
-/* 4. Wedding background music */
+
+/* 4. Start wedding music on first screen interaction */
 
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
-const hero = document.querySelector(".hero");
 
 if (music) {
 
-    async function startWeddingMusic() {
+    let musicStarted = false;
+
+    async function startMusic() {
+        if (musicStarted) return;
+
         try {
             await music.play();
+            musicStarted = true;
 
             if (musicButton) {
                 musicButton.textContent = "♫";
@@ -80,22 +85,33 @@ if (music) {
             }
 
         } catch (error) {
-            console.log("Music playback error:", error);
+            console.log("Music could not start:", error);
         }
     }
 
-    // Start music when visitor clicks the opening invitation screen
-    if (hero) {
-        hero.addEventListener("click", startWeddingMusic, { once: true });
-    }
+    // Start music on the first touch, click or keyboard interaction
+    document.addEventListener("pointerdown", startMusic, {
+        once: true
+    });
 
-    // Music play/pause button
+    document.addEventListener("keydown", startMusic, {
+        once: true
+    });
+
+    // Golden music button: play and pause
     if (musicButton) {
         musicButton.addEventListener("click", async (event) => {
             event.stopPropagation();
 
             if (music.paused) {
-                await startWeddingMusic();
+                try {
+                    await music.play();
+                    musicStarted = true;
+                    musicButton.textContent = "♫";
+                    musicButton.setAttribute("aria-pressed", "true");
+                } catch (error) {
+                    console.log(error);
+                }
             } else {
                 music.pause();
                 musicButton.textContent = "♪";
@@ -104,6 +120,7 @@ if (music) {
         });
     }
 }
+
 
 /* 5. Gallery lightbox */
 const lightbox = document.getElementById("lightbox");
