@@ -23,10 +23,15 @@ section { scroll-margin-top: 75px; }
 .nav-toggle { display: none; color: white; border: 0; background: transparent; font-size: 25px; cursor: pointer; }
 
 .hero { min-height: 100vh; position: relative; display: flex; justify-content: center; align-items: center; text-align: center; color: white; overflow: hidden; background: var(--deep-navy); }
-.hero::before { content: ""; position: absolute; inset: 0;background-image: url("./couple-main.JPG");
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("./couple-main.JPG");
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat; }
+    background-repeat: no-repeat;
+}
 .hero-overlay { position: absolute; inset: 0; background: rgba(10,20,38,.48); }
 .hero-content { position: relative; z-index: 2; padding: 25px; animation: fadeUp 1.5s ease both; }
 .hero-small { font-size: 10px; letter-spacing: 5px; margin-bottom: 24px; }
