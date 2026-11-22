@@ -60,34 +60,49 @@ if ("IntersectionObserver" in window && !reduceMotion) {
 
 
 
-/* Wedding music */
+
+/* 4. Wedding background music */
 
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
 const openInvitation = document.getElementById("openInvitation");
 
-async function startWeddingMusic() {
-    try {
-        await music.play();
-        musicButton.textContent = "♫";
-        musicButton.setAttribute("aria-pressed", "true");
-    } catch (error) {
-        console.log("Music playback failed:", error);
+if (music) {
+
+    async function startWeddingMusic() {
+        try {
+            await music.play();
+
+            if (musicButton) {
+                musicButton.textContent = "♫";
+                musicButton.setAttribute("aria-pressed", "true");
+            }
+
+        } catch (error) {
+            console.log("Music playback failed:", error);
+        }
+    }
+
+    // Start music when visitor opens invitation
+    if (openInvitation) {
+        openInvitation.addEventListener("click", startWeddingMusic);
+    }
+
+    // Golden music button
+    if (musicButton) {
+        musicButton.addEventListener("click", async () => {
+
+            if (music.paused) {
+                await startWeddingMusic();
+            } else {
+                music.pause();
+                musicButton.textContent = "♪";
+                musicButton.setAttribute("aria-pressed", "false");
+            }
+
+        });
     }
 }
-
-openInvitation.addEventListener("click", startWeddingMusic);
-
-musicButton.addEventListener("click", async () => {
-    if (music.paused) {
-        await startWeddingMusic();
-    } else {
-        music.pause();
-        musicButton.textContent = "♪";
-        musicButton.setAttribute("aria-pressed", "false");
-    }
-});
-
 
 /* 5. Gallery lightbox */
 const lightbox = document.getElementById("lightbox");
