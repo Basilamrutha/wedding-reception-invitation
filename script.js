@@ -58,29 +58,32 @@ if ("IntersectionObserver" in window && !reduceMotion) {
   revealItems.forEach(item => item.classList.add("active"));
 }
 
-/* 4. Background music: starts only after visitor presses the button */
+
+/* 4. Background music */
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
-let playing = false;
-musicButton.addEventListener("click", async () => {
-  try {
-    if (!playing) {
-      await music.play();
-      playing = true;
-      musicButton.textContent = "♫";
-      musicButton.setAttribute("aria-pressed", "true");
-      musicButton.setAttribute("aria-label", "Pause wedding music");
-    } else {
-      music.pause();
-      playing = false;
-      musicButton.textContent = "♪";
-      musicButton.setAttribute("aria-pressed", "false");
-      musicButton.setAttribute("aria-label", "Play wedding music");
+
+if (music && musicButton) {
+  musicButton.addEventListener("click", async () => {
+    try {
+      if (music.paused) {
+        await music.play();
+        musicButton.textContent = "♫";
+        musicButton.setAttribute("aria-pressed", "true");
+        musicButton.setAttribute("aria-label", "Pause wedding music");
+      } else {
+        music.pause();
+        musicButton.textContent = "♪";
+        musicButton.setAttribute("aria-pressed", "false");
+        musicButton.setAttribute("aria-label", "Play wedding music");
+      }
+    } catch (error) {
+      console.error("Music error:", error);
+      alert("Music could not play. Please check the audio file.");
     }
-  } catch (error) {
-    console.error("Could not play music. Check the MP3 file path.", error);
-  }
-});
+  });
+}
+
 
 /* 5. Gallery lightbox */
 const lightbox = document.getElementById("lightbox");
