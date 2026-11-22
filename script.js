@@ -65,71 +65,55 @@ if ("IntersectionObserver" in window && !reduceMotion) {
 
 
 
-/* 4. Wedding music - Tap anywhere to play */
+
+/* Wedding music - Tap anywhere to play */
 
 const music = document.getElementById("weddingMusic");
 const musicButton = document.getElementById("musicButton");
 const musicHint = document.getElementById("musicHint");
 
-if (music) {
+let musicStarted = false;
 
-    let musicStarted = false;
+async function playWeddingMusic() {
+    if (!music) return;
 
-    async function startMusic() {
-        if (musicStarted) return;
+    try {
+        await music.play();
+        musicStarted = true;
 
-        try {
-            await music.play();
-
-            musicStarted = true;
-
-            if (musicButton) {
-                musicButton.textContent = "♫";
-                musicButton.setAttribute("aria-pressed", "true");
-            }
-
-            if (musicHint) {
-                musicHint.classList.add("hidden");
-            }
-
-        } catch (error) {
-            console.error("Music playback failed:", error);
-        }
-    }
-
-    // First tap anywhere starts the music
-    document.addEventListener("pointerdown", function firstTap(event) {
-
-        // Let the music button handle its own click
-        if (musicButton && musicButton.contains(event.target)) {
-            return;
+        if (musicHint) {
+            musicHint.classList.add("hidden");
         }
 
-        startMusic();
-
-    });
-
-    // Golden music button - play and pause
-    if (musicButton) {
-
-        musicButton.addEventListener("click", async () => {
-
-            if (music.paused) {
-
-                await startMusic();
-
-            } else {
-
-                music.pause();
-                musicButton.textContent = "♪";
-                musicButton.setAttribute("aria-pressed", "false");
-
-            }
-
-        });
-
+        if (musicButton) {
+            musicButton.textContent = "♫";
+        }
+    } catch (error) {
+        console.log("Music could not start:", error);
     }
 }
+
+document.addEventListener("pointerdown", function (event) {
+    if (musicButton && musicButton.contains(event.target)) return;
+
+    if (!musicStarted) {
+        playWeddingMusic();
+    }
+});
+
+if (musicButton && music) {
+    musicButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        if (music.paused) {
+            playWeddingMusic();
+        } else {
+            music.pause();
+            musicButton.textContent = "♪";
+        }
+    });
+}
+
 
 
 /* 5. Gallery lightbox */
