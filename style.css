@@ -325,3 +325,16 @@ footer p { font-size: 13px; color: #DDD2C0; }
     cursor: pointer;
     box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
+
+/* Hide unwanted default audio controls */
+audio {
+    display: none !important;
+}
+
+/* Keep custom golden music button visible */
+.music-button {
+    display: flex !important;
+    position: fixed;
+    z-index: 9999;
+}
+
